@@ -1,0 +1,53 @@
+{
+    "name": "symfony/ux-icons",
+    "type": "symfony-bundle",
+    "description": "Twig component to use svg icons in your Symfony app",
+    "keywords": [
+        "symfony-ux",
+        "twig",
+        "icons"
+    ],
+    "homepage": "https://symfony.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Symfony Community",
+            "homepage": "https://symfony.com/contributors"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Symfony\\UX\\Icons\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Symfony\\UX\\Icons\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=8.1",
+        "symfony/css-selector": "^6.0|7.0",
+        "symfony/dom-crawler": "^6.0|^7.0",
+        "symfony/framework-bundle": "^6.0|^7.0",
+        "symfony/twig-bundle": "^6.0|7.0"
+    },
+    "require-dev": {
+        "symfony/console": "^6.0|^7.0",
+        "symfony/phpunit-bridge": "^6.0|^7.0",
+        "zenstruck/console-test": "^1.5"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "conflict": {
+        "symfony/flex": "<1.13"
+    },
+    "extra": {
+        "thanks": {
+            "name": "symfony/ux",
+            "url": "https://github.com/symfony/ux"
+        }
+    },
+    "minimum-stability": "dev"
+}
