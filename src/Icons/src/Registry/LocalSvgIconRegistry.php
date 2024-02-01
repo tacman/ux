@@ -11,7 +11,6 @@
 
 namespace Symfony\UX\Icons\Registry;
 
-use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Finder\Finder;
 use Symfony\UX\Icons\Exception\IconNotFoundException;
 use Symfony\UX\Icons\IconRegistryInterface;
@@ -34,15 +33,23 @@ final class LocalSvgIconRegistry implements IconRegistryInterface
         }
 
         $svg = file_get_contents($filename) ?: throw new \RuntimeException(sprintf('The icon file "%s" could not be read.', $filename));
-        $crawler = (new Crawler($svg))->filter('svg');
-        $node = $crawler->getNode(0) ?? throw new \RuntimeException(sprintf('The icon file "%s" is not a valid SVG.', $filename));
-        $attributes = [];
+        $doc = new \DOMDocument();
+        $doc->loadXML($svg);
+        $svgTag = $doc->firstElementChild;
+        $html = '';
 
-        if ($viewBox = $node->attributes?->getNamedItem('viewbox')?->nodeValue) {
-            $attributes['viewBox'] = $viewBox;
+        foreach ($svgTag->childNodes as $child) {
+            $html .= $doc->saveHTML($child);
         }
 
-        return [$crawler->html(), $attributes];
+        $allAttributes = array_map(fn (\DOMAttr $a) => $a->value, [...$svgTag->attributes]);
+        $attributes = [];
+
+        if (isset($allAttributes['viewBox'])) {
+            $attributes['viewBox'] = $allAttributes['viewBox'];
+        }
+
+        return [$html, $attributes];
     }
 
     public function getIterator(): \Traversable

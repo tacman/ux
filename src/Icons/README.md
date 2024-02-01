@@ -46,19 +46,17 @@ bin/console ux:icons:warm-cache
 
 ```yaml
 ux_icons:
-
     # The local directory where icons are stored.
-    icon_dir:             '%kernel.project_dir%/templates/icons'
+    icon_dir: '%kernel.project_dir%/templates/icons'
 
     # The cache pool to use for icons.
-    cache:                cache.app
+    cache: cache.app
 
     # Whether to warm the icon cache when the container is warmed up.
     cache_on_container_warmup: true
 
     # Default attributes to add to all icons.
     default_icon_attributes:
-
         # Default:
-        fill:                currentColor
+        fill: currentColor
 ```
