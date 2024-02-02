@@ -38,6 +38,11 @@ final class TestKernel extends Kernel
             'property_access' => true,
         ]);
 
+        $c->extension('twig_component', [
+            'defaults' => [],
+            'anonymous_template_directory' => 'components',
+        ]);
+
         $c->extension('ux_icons', [
             'icon_dir' => '%kernel.project_dir%/tests/Fixtures/icons',
             'twig_component_name' => 'Icon',
