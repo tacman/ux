@@ -8,7 +8,7 @@ composer require symfony/ux-icons
 
 ## Add Icons
 
-No icons are provided by this package. Add your svg icons to the `templates/icons/` directory.
+No icons are provided by this package. Add your svg icons to the `templates/icons/` directory and commit them.
 The name of the file is used as the name of the icon (`name.svg` will be named `name`).
 
 When icons are rendered, any attributes (except `viewBox`) on the file's `<svg>` element will
