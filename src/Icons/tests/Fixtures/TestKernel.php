@@ -9,6 +9,7 @@ use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\UX\Icons\UXIconsBundle;
+use Symfony\UX\TwigComponent\TwigComponentBundle;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -21,6 +22,7 @@ final class TestKernel extends Kernel
     {
         yield new FrameworkBundle();
         yield new TwigBundle();
+        yield new TwigComponentBundle();
         yield new UXIconsBundle();
     }
 
@@ -33,6 +35,7 @@ final class TestKernel extends Kernel
             'secrets' => false,
             'http_method_override' => false,
             'php_errors' => ['log' => true],
+            'property_access' => true,
         ]);
 
         $c->extension('ux_icons', [

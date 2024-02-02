@@ -35,6 +35,7 @@
         "symfony/css-selector": "^6.0|7.0",
         "symfony/dom-crawler": "^6.0|7.0",
         "symfony/phpunit-bridge": "^6.0|^7.0",
+        "symfony/ux-twig-component": "^2.14",
         "zenstruck/console-test": "^1.5"
     },
     "config": {

@@ -15,6 +15,7 @@ use Symfony\UX\Icons\Command\WarmIconCacheCommand;
 use Symfony\UX\Icons\IconRenderer;
 use Symfony\UX\Icons\Registry\CacheIconRegistry;
 use Symfony\UX\Icons\Registry\LocalSvgIconRegistry;
+use Symfony\UX\Icons\Twig\UXIconComponent;
 use Symfony\UX\Icons\Twig\UXIconExtension;
 
 return static function (ContainerConfigurator $container): void {
@@ -46,5 +47,11 @@ return static function (ContainerConfigurator $container): void {
                 service('.ux_icons.icon_registry'),
             ])
             ->tag('twig.runtime')
+
+        ->set('.ux_icons.twig_component.icon', UXIconComponent::class)
+            ->tag('twig.component', [
+                'key' => 'UX:Icon',
+                'template' => '@UXIcons/Icon.html.twig',
+            ])
     ;
 };

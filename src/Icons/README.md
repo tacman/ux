@@ -24,6 +24,17 @@ your design.
 {{ ux_icon('sub-dir:user-profile', {class: 'w-4 h-4'}) }} <!-- renders "sub-dir/user-profile.svg" (sub-directory) -->
 ```
 
+### HTML Syntax
+
+> [!NOTE]
+> `symfony/ux-twig-component` is required to use the HTML syntax.
+
+```html
+<twig:UX:Icon name="user-profile" class="w-4 h-4" /> <!-- renders "user-profile.svg" -->
+
+<twig:UX:Icon name="sub-dir:user-profile" class="w-4 h-4" /> <!-- renders "sub-dir/user-profile.svg" (sub-directory) -->
+```
+
 ## Caching
 
 To avoid having to parse icon files on every request, icons are cached (`app.cache` by

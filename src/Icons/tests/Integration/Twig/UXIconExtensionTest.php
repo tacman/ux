@@ -28,15 +28,17 @@ final class UXIconExtensionTest extends KernelTestCase
                 <li id="second">{{ ux_icon('user') }}</li>
                 <li id="third">{{ ux_icon('sub:check') }}</li>
                 <li id="forth">{{ ux_icon('sub/check') }}</li>
+                <li id="fifth"><twig:UX:Icon name="user" class="h-6 w-6" /></li>
+                <li id="sixth"><twig:UX:Icon name="sub:check" /></li>
             </ul>
             TWIG
         )->render();
 
         $crawler = new Crawler($output);
 
-        $this->assertCount(4, $crawler->filter('.svg svg path'));
-        $this->assertCount(1, $crawler->filter('.svg svg.h-6.w-6 path'));
-        $this->assertCount(4, $crawler->filter('.svg svg[fill="currentColor"]'));
-        $this->assertCount(4, $crawler->filter('.svg svg[viewBox="0 0 24 24"]'));
+        $this->assertCount(6, $crawler->filter('.svg svg path'));
+        $this->assertCount(2, $crawler->filter('.svg svg.h-6.w-6 path'));
+        $this->assertCount(6, $crawler->filter('.svg svg[fill="currentColor"]'));
+        $this->assertCount(6, $crawler->filter('.svg svg[viewBox="0 0 24 24"]'));
     }
 }
