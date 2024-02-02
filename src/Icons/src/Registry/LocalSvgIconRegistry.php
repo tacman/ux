@@ -34,15 +34,37 @@ final class LocalSvgIconRegistry implements IconRegistryInterface
 
         $svg = file_get_contents($filename) ?: throw new \RuntimeException(sprintf('The icon file "%s" could not be read.', $filename));
         $doc = new \DOMDocument();
-        $doc->loadXML($svg);
-        $svgTag = $doc->firstElementChild;
+        $doc->preserveWhiteSpace = false;
+
+        try {
+            $doc->loadXML($svg);
+        } catch (\Throwable $e) {
+            throw new \RuntimeException(sprintf('The icon file "%s" does not contain a valid SVG.', $filename), previous: $e);
+        }
+
+        $svgElements = $doc->getElementsByTagName('svg');
+
+        if (0 === $svgElements->length) {
+            throw new \RuntimeException(sprintf('The icon file "%s" does not contain a valid SVG.', $filename));
+        }
+
+        if (1 !== $svgElements->length) {
+            throw new \RuntimeException(sprintf('The icon file "%s" contains more than one SVG.', $filename));
+        }
+
+        $svgElement = $svgElements->item(0) ?? throw new \RuntimeException(sprintf('The icon file "%s" does not contain a valid SVG.', $filename));
+
         $html = '';
 
-        foreach ($svgTag->childNodes as $child) {
+        foreach ($svgElement->childNodes as $child) {
             $html .= $doc->saveHTML($child);
         }
 
-        $allAttributes = array_map(fn (\DOMAttr $a) => $a->value, [...$svgTag->attributes]);
+        if (!$html) {
+            throw new \RuntimeException(sprintf('The icon file "%s" contains an empty SVG.', $filename));
+        }
+
+        $allAttributes = array_map(fn (\DOMAttr $a) => $a->value, [...$svgElement->attributes]);
         $attributes = [];
 
         if (isset($allAttributes['viewBox'])) {
