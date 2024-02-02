@@ -40,6 +40,7 @@ final class TestKernel extends Kernel
 
         $c->extension('ux_icons', [
             'icon_dir' => '%kernel.project_dir%/tests/Fixtures/icons',
+            'twig_component_name' => 'Icon',
         ]);
 
         $c->services()->set('logger', NullLogger::class);

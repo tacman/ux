@@ -41,6 +41,10 @@ final class UXIconsExtension extends ConfigurableExtension implements Configurat
                     ->info('The cache pool to use for icons.')
                     ->defaultValue('cache.system')
                 ->end()
+                ->scalarNode('twig_component_name')
+                    ->info('The name of the Twig component to use for rendering icons.')
+                    ->defaultValue('UX:Icon')
+                ->end()
                 ->booleanNode('cache_on_container_warmup')
                     ->info('Whether to warm the icon cache when the container is warmed up.')
                     ->defaultTrue()
@@ -77,6 +81,13 @@ final class UXIconsExtension extends ConfigurableExtension implements Configurat
 
         $container->getDefinition('.ux_icons.icon_renderer')
             ->setArgument(1, $mergedConfig['default_icon_attributes'])
+        ;
+
+        $container->getDefinition('.ux_icons.twig_component.icon')
+            ->addTag('twig.component', [
+                'key' => $mergedConfig['twig_component_name'],
+                'template' => '@UXIcons/Icon.html.twig',
+            ])
         ;
 
         if ($mergedConfig['cache_on_container_warmup']) {

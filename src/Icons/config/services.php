@@ -49,9 +49,5 @@ return static function (ContainerConfigurator $container): void {
             ->tag('twig.runtime')
 
         ->set('.ux_icons.twig_component.icon', UXIconComponent::class)
-            ->tag('twig.component', [
-                'key' => 'UX:Icon',
-                'template' => '@UXIcons/Icon.html.twig',
-            ])
     ;
 };

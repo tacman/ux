@@ -35,6 +35,10 @@ your design.
 <twig:UX:Icon name="sub-dir:user-profile" class="w-4 h-4" /> <!-- renders "sub-dir/user-profile.svg" (sub-directory) -->
 ```
 
+> [!TIP]
+> The Twig component _name_ can be [configured](#full-default-configuration). For instance, you can change
+> it to `Icon` to use `<twig:Icon ...>`.
+
 ## Caching
 
 To avoid having to parse icon files on every request, icons are cached (`cache.system` by
@@ -62,6 +66,9 @@ ux_icons:
 
     # The cache pool to use for icons.
     cache: cache.system
+
+    # The name of the Twig component to use for rendering icons.
+    twig_component_name: 'UX:Icon'
 
     # Whether to warm the icon cache when the container is warmed up.
     cache_on_container_warmup: true

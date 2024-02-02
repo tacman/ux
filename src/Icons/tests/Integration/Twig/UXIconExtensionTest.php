@@ -28,8 +28,8 @@ final class UXIconExtensionTest extends KernelTestCase
                 <li id="second">{{ ux_icon('user') }}</li>
                 <li id="third">{{ ux_icon('sub:check') }}</li>
                 <li id="forth">{{ ux_icon('sub/check') }}</li>
-                <li id="fifth"><twig:UX:Icon name="user" class="h-6 w-6" /></li>
-                <li id="sixth"><twig:UX:Icon name="sub:check" /></li>
+                <li id="fifth"><twig:Icon name="user" class="h-6 w-6" /></li>
+                <li id="sixth"><twig:Icon name="sub:check" /></li>
             </ul>
             TWIG
         )->render();
