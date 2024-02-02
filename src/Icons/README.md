@@ -41,13 +41,13 @@ your design.
 
 ## Caching
 
-To avoid having to parse icon files on every request, icons are cached (`cache.system` by
-default but can be [configured](#full-default-configuration)).
-
-If using a tagged cache adapter, cached icons are tagged with `ux-icon`.
+To avoid having to parse icon files on every request, icons are cached.
 
 During container warmup (`cache:warmup` and `cache:clear`), the icon cache is warmed.
-This behavior can be disabled via [configuration](#full-default-configuration).
+
+> [!NOTE]
+> During development, if you change an icon, you will need to clear the cache (`bin/console cache:clear`)
+> to see the changes.
 
 ### Manual Cache Warmup
 
@@ -64,14 +64,8 @@ ux_icons:
     # The local directory where icons are stored.
     icon_dir: '%kernel.project_dir%/templates/icons'
 
-    # The cache pool to use for icons.
-    cache: cache.system
-
     # The name of the Twig component to use for rendering icons.
     twig_component_name: 'UX:Icon'
-
-    # Whether to warm the icon cache when the container is warmed up.
-    cache_on_container_warmup: true
 
     # Default attributes to add to all icons.
     default_icon_attributes:

@@ -37,17 +37,9 @@ final class UXIconsExtension extends ConfigurableExtension implements Configurat
                     ->info('The local directory where icons are stored.')
                     ->defaultValue('%kernel.project_dir%/templates/icons')
                 ->end()
-                ->scalarNode('cache')
-                    ->info('The cache pool to use for icons.')
-                    ->defaultValue('cache.system')
-                ->end()
                 ->scalarNode('twig_component_name')
                     ->info('The name of the Twig component to use for rendering icons.')
                     ->defaultValue('UX:Icon')
-                ->end()
-                ->booleanNode('cache_on_container_warmup')
-                    ->info('Whether to warm the icon cache when the container is warmed up.')
-                    ->defaultTrue()
                 ->end()
                 ->variableNode('default_icon_attributes')
                     ->info('Default attributes to add to all icons.')
@@ -69,10 +61,6 @@ final class UXIconsExtension extends ConfigurableExtension implements Configurat
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../../config'));
         $loader->load('services.php');
 
-        $container->getDefinition('.ux_icons.cache_icon_registry')
-            ->setArgument(1, new Reference($mergedConfig['cache']))
-        ;
-
         $container->getDefinition('.ux_icons.local_svg_icon_registry')
             ->setArguments([
                 $mergedConfig['icon_dir'],
@@ -89,11 +77,5 @@ final class UXIconsExtension extends ConfigurableExtension implements Configurat
                 'template' => '@UXIcons/Icon.html.twig',
             ])
         ;
-
-        if ($mergedConfig['cache_on_container_warmup']) {
-            $container->getDefinition('.ux_icons.cache_icon_registry')
-                ->addTag('kernel.cache_warmer')
-            ;
-        }
     }
 }

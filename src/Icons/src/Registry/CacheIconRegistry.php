@@ -13,8 +13,6 @@ namespace Symfony\UX\Icons\Registry;
 
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Cache\ItemInterface;
-use Symfony\Contracts\Cache\TagAwareCacheInterface;
 use Symfony\UX\Icons\Exception\IconNotFoundException;
 use Symfony\UX\Icons\IconRegistryInterface;
 
@@ -36,11 +34,7 @@ final class CacheIconRegistry implements IconRegistryInterface, CacheWarmerInter
     {
         return $this->cache->get(
             sprintf('ux-icon-%s', str_replace([':', '/'], ['-', '-'], $name)),
-            function (ItemInterface $item) use ($name) {
-                if ($this->cache instanceof TagAwareCacheInterface) {
-                    $item->tag('ux-icon');
-                }
-
+            function () use ($name) {
                 foreach ($this->registries as $registry) {
                     try {
                         return $registry->get($name);
