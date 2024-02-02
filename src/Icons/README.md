@@ -37,7 +37,7 @@ your design.
 
 ## Caching
 
-To avoid having to parse icon files on every request, icons are cached (`app.cache` by
+To avoid having to parse icon files on every request, icons are cached (`cache.system` by
 default but can be [configured](#full-default-configuration)).
 
 If using a tagged cache adapter, cached icons are tagged with `ux-icon`.
@@ -61,7 +61,7 @@ ux_icons:
     icon_dir: '%kernel.project_dir%/templates/icons'
 
     # The cache pool to use for icons.
-    cache: cache.app
+    cache: cache.system
 
     # Whether to warm the icon cache when the container is warmed up.
     cache_on_container_warmup: true

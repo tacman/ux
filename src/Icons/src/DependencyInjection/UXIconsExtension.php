@@ -39,7 +39,7 @@ final class UXIconsExtension extends ConfigurableExtension implements Configurat
                 ->end()
                 ->scalarNode('cache')
                     ->info('The cache pool to use for icons.')
-                    ->defaultValue('cache.app')
+                    ->defaultValue('cache.system')
                 ->end()
                 ->booleanNode('cache_on_container_warmup')
                     ->info('Whether to warm the icon cache when the container is warmed up.')
