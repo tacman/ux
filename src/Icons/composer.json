@@ -5,7 +5,8 @@
     "keywords": [
         "symfony-ux",
         "twig",
-        "icons"
+        "icons",
+        "svg"
     ],
     "homepage": "https://symfony.com",
     "license": "MIT",
@@ -28,7 +29,7 @@
     "require": {
         "php": ">=8.1",
         "symfony/framework-bundle": "^6.4|^7.0",
-        "symfony/twig-bundle": "^6.4|7.0"
+        "symfony/twig-bundle": "^6.4|^7.0"
     },
     "require-dev": {
         "symfony/console": "^6.4|^7.0",
