@@ -29,34 +29,15 @@ final class IconRenderer
      */
     public function renderIcon(string $name, array $attributes = []): string
     {
-        [$content, $iconAttr] = $this->registry->get($name);
+        // TODO generate class name(s)
+        // TODO add role/aria
 
-        $iconAttr = array_merge($iconAttr, $this->defaultIconAttributes);
+        // TODO catch IconNotFoundException
+        // --> only possible if we add a new method to IconRegistryInterface
 
-        return sprintf(
-            '<svg%s>%s</svg>',
-            self::normalizeAttributes([...$iconAttr, ...$attributes]),
-            $content,
-        );
-    }
-
-    /**
-     * @param array<string,string|bool> $attributes
-     */
-    private static function normalizeAttributes(array $attributes): string
-    {
-        return array_reduce(
-            array_keys($attributes),
-            static function (string $carry, string $key) use ($attributes) {
-                $value = $attributes[$key];
-
-                return match ($value) {
-                    true => "{$carry} {$key}",
-                    false => $carry,
-                    default => sprintf('%s %s="%s"', $carry, $key, $value),
-                };
-            },
-            ''
-        );
+        return $this->registry->get($name)
+            ->withAttributes([...$this->defaultIconAttributes, ...$attributes])
+            ->toHtml()
+        ;
     }
 }

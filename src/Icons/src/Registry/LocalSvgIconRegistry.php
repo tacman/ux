@@ -14,6 +14,7 @@ namespace Symfony\UX\Icons\Registry;
 use Symfony\Component\Finder\Finder;
 use Symfony\UX\Icons\Exception\IconNotFoundException;
 use Symfony\UX\Icons\IconRegistryInterface;
+use Symfony\UX\Icons\Svg\Icon;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -26,13 +27,18 @@ final class LocalSvgIconRegistry implements IconRegistryInterface
     {
     }
 
-    public function get(string $name): array
+    public function get(string $name): Icon
     {
+        if (!Icon::isValidName($name)) {
+            throw new IconNotFoundException(sprintf('The icon name "%s" is not valid.', $name));
+        }
+
         if (!file_exists($filename = sprintf('%s/%s.svg', $this->iconDir, str_replace(':', '/', $name)))) {
             throw new IconNotFoundException(sprintf('The icon "%s" (%s) does not exist.', $name, $filename));
         }
 
         $svg = file_get_contents($filename) ?: throw new \RuntimeException(sprintf('The icon file "%s" could not be read.', $filename));
+
         $doc = new \DOMDocument();
         $doc->preserveWhiteSpace = false;
 
@@ -54,15 +60,18 @@ final class LocalSvgIconRegistry implements IconRegistryInterface
 
         $svgElement = $svgElements->item(0) ?? throw new \RuntimeException(sprintf('The icon file "%s" does not contain a valid SVG.', $filename));
 
-        $html = '';
+        $innerSvg = '';
 
         foreach ($svgElement->childNodes as $child) {
-            $html .= $doc->saveHTML($child);
+            $innerSvg .= $doc->saveHTML($child);
         }
 
-        if (!$html) {
+        if (!$innerSvg) {
             throw new \RuntimeException(sprintf('The icon file "%s" contains an empty SVG.', $filename));
         }
+
+        // @todo: save all attributes in the local object ?
+        // allow us to defer the decision of which attributes to keep or not
 
         $allAttributes = array_map(fn (\DOMAttr $a) => $a->value, [...$svgElement->attributes]);
         $attributes = [];
@@ -71,7 +80,7 @@ final class LocalSvgIconRegistry implements IconRegistryInterface
             $attributes['viewBox'] = $allAttributes['viewBox'];
         }
 
-        return [$html, $attributes];
+        return new Icon($innerSvg, $attributes);
     }
 
     public function getIterator(): \Traversable

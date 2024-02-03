@@ -12,6 +12,7 @@
 namespace Symfony\UX\Icons;
 
 use Symfony\UX\Icons\Exception\IconNotFoundException;
+use Symfony\UX\Icons\Svg\Icon;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -23,9 +24,7 @@ use Symfony\UX\Icons\Exception\IconNotFoundException;
 interface IconRegistryInterface extends \IteratorAggregate, \Countable
 {
     /**
-     * @return array{0: string, 1: array<string, string|bool>}
-     *
      * @throws IconNotFoundException
      */
-    public function get(string $name): array;
+    public function get(string $name): Icon;
 }

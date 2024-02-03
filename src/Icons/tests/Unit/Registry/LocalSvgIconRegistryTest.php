@@ -13,6 +13,7 @@ namespace Symfony\UX\Icons\Tests\Unit\Registry;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\UX\Icons\Registry\LocalSvgIconRegistry;
+use Symfony\UX\Icons\Svg\Icon;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -24,10 +25,10 @@ final class LocalSvgIconRegistryTest extends TestCase
      */
     public function testValidSvgs(string $name, array $expectedAttributes, string $expectedContent): void
     {
-        [$content, $attributes] = $this->registry()->get($name);
-
-        $this->assertSame($expectedContent, $content);
-        $this->assertSame($expectedAttributes, $attributes);
+        $icon = $this->registry()->get($name);
+        $this->assertInstanceOf(Icon::class, $icon);
+        $this->assertSame($expectedContent, $icon->getInnerSvg());
+        $this->assertSame($expectedAttributes, $icon->getAttributes());
     }
 
     public static function validSvgProvider(): iterable

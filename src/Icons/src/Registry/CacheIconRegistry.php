@@ -15,6 +15,7 @@ use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\UX\Icons\Exception\IconNotFoundException;
 use Symfony\UX\Icons\IconRegistryInterface;
+use Symfony\UX\Icons\Svg\Icon;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -30,10 +31,14 @@ final class CacheIconRegistry implements IconRegistryInterface, CacheWarmerInter
     {
     }
 
-    public function get(string $name, bool $refresh = false): array
+    public function get(string $name, bool $refresh = false): Icon
     {
+        if (!Icon::isValidName($name)) {
+            throw new IconNotFoundException(sprintf('The icon name "%s" is not valid.', $name));
+        }
+
         return $this->cache->get(
-            sprintf('ux-icon-%s', str_replace([':', '/'], ['-', '-'], $name)),
+            sprintf('ux-icon-%s', Icon::nameToId($name)),
             function () use ($name) {
                 foreach ($this->registries as $registry) {
                     try {
