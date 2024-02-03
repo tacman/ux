@@ -61,17 +61,6 @@ final class CacheIconRegistry implements IconRegistryInterface, CacheWarmerInter
         }
     }
 
-    public function count(): int
-    {
-        $count = 0;
-
-        foreach ($this->registries as $registry) {
-            $count += \count($registry);
-        }
-
-        return $count;
-    }
-
     public function isOptional(): bool
     {
         return true;

@@ -82,11 +82,6 @@ final class LocalSvgIconRegistry implements IconRegistryInterface
         }
     }
 
-    public function count(): int
-    {
-        return $this->finder()->count();
-    }
-
     private function finder(): Finder
     {
         return Finder::create()->in($this->iconDir)->files()->name('*.svg');
