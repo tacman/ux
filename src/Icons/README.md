@@ -49,14 +49,6 @@ During container warmup (`cache:warmup` and `cache:clear`), the icon cache is wa
 > During development, if you change an icon, you will need to clear the cache (`bin/console cache:clear`)
 > to see the changes.
 
-### Manual Cache Warmup
-
-If you chose to disable container icon cache warmup, a warmup command is provided:
-
-```bash
-bin/console ux:icons:warm-cache
-```
-
 ## Full Default Configuration
 
 ```yaml
