@@ -1,9 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Symfony package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Symfony\UX\Icons\Svg;
 
 /**
- *
  * @author Simon André <smn.andre@gmail.com>
  *
  * @internal
@@ -14,6 +22,7 @@ final class Icon implements \Stringable, \Serializable, \ArrayAccess
      * Transforms a valid icon ID into an icon name.
      *
      * @throws \InvalidArgumentException if the ID is not valid
+     *
      * @see isValidId()
      */
     public static function idToName(string $id): string
@@ -29,6 +38,7 @@ final class Icon implements \Stringable, \Serializable, \ArrayAccess
      * Transforms a valid icon name into an ID.
      *
      * @throws \InvalidArgumentException if the name is not valid
+     *
      * @see isValidName()
      */
     public static function nameToId(string $name): string
@@ -69,8 +79,7 @@ final class Icon implements \Stringable, \Serializable, \ArrayAccess
     public function __construct(
         private readonly string $innerSvg,
         private readonly array $attributes = [],
-    )
-    {
+    ) {
         // @todo validate attributes (?)
         // the main idea is to have a way to validate the attributes
         // before the icon is cached to improve performances
@@ -86,8 +95,8 @@ final class Icon implements \Stringable, \Serializable, \ArrayAccess
             }
             $htmlAttributes .= ' '.$name;
             if (true !== $value) {
-                $value = htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-                $htmlAttributes .= '="'. $value .'"';
+                $value = htmlspecialchars($value, \ENT_QUOTES | \ENT_SUBSTITUTE, 'UTF-8');
+                $htmlAttributes .= '="'.$value.'"';
             }
         }
 
@@ -109,19 +118,18 @@ final class Icon implements \Stringable, \Serializable, \ArrayAccess
 
     /**
      * @param array<string, string|bool> $attributes
-     * @return self
      */
     public function withAttributes(array $attributes): self
     {
         foreach ($attributes as $name => $value) {
-            if (!is_string($name)) {
+            if (!\is_string($name)) {
                 throw new \InvalidArgumentException(sprintf('Attribute names must be string, "%s" given.', get_debug_type($name)));
             }
             // @todo regexp would be better ?
             if (!ctype_alnum($name) && !str_contains($name, '-')) {
                 throw new \InvalidArgumentException(sprintf('Invalid attribute name "%s".', $name));
             }
-            if (!is_string($value) && !is_bool($value)) {
+            if (!\is_string($value) && !\is_bool($value)) {
                 throw new \InvalidArgumentException(sprintf('Invalid value type for attribute "%s". Boolean or string allowed, "%s" provided. ', $name, get_debug_type($value)));
             }
         }
