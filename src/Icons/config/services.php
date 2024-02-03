@@ -22,7 +22,7 @@ return static function (ContainerConfigurator $container): void {
     $container->services()
         ->set('.ux_icons.cache_icon_registry', CacheIconRegistry::class)
             ->args([
-                iterator([service('.ux_icons.local_svg_icon_registry')]),
+                service('.ux_icons.local_svg_icon_registry'),
                 service('cache.system'),
             ])
             ->tag('kernel.cache_warmer')

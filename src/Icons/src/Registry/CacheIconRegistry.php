@@ -24,41 +24,18 @@ use Symfony\UX\Icons\Svg\Icon;
  */
 final class CacheIconRegistry implements IconRegistryInterface, CacheWarmerInterface
 {
-    /**
-     * @param IconRegistryInterface[] $registries
-     */
-    public function __construct(private \Traversable $registries, private CacheInterface $cache)
+    public function __construct(private IconRegistryInterface $inner, private CacheInterface $cache)
     {
     }
 
-    public function get(string $name, bool $refresh = false): Icon
+    public function get(string $name): Icon
     {
-        if (!Icon::isValidName($name)) {
-            throw new IconNotFoundException(sprintf('The icon name "%s" is not valid.', $name));
-        }
-
-        return $this->cache->get(
-            sprintf('ux-icon-%s', Icon::nameToId($name)),
-            function () use ($name) {
-                foreach ($this->registries as $registry) {
-                    try {
-                        return $registry->get($name);
-                    } catch (IconNotFoundException) {
-                        // ignore
-                    }
-                }
-
-                throw new IconNotFoundException(sprintf('The icon "%s" does not exist.', $name));
-            },
-            beta: $refresh ? \INF : null,
-        );
+        return $this->fetchIcon($name);
     }
 
     public function getIterator(): \Traversable
     {
-        foreach ($this->registries as $registry) {
-            yield from $registry;
-        }
+        yield from $this->inner;
     }
 
     public function isOptional(): bool
@@ -69,9 +46,22 @@ final class CacheIconRegistry implements IconRegistryInterface, CacheWarmerInter
     public function warmUp(string $cacheDir, ?string $buildDir = null): array
     {
         foreach ($this as $name) {
-            $this->get($name, refresh: true);
+            $this->fetchIcon($name, refresh: true);
         }
 
         return [];
+    }
+
+    private function fetchIcon(string $name, bool $refresh = false): Icon
+    {
+        if (!Icon::isValidName($name)) {
+            throw new IconNotFoundException(sprintf('The icon name "%s" is not valid.', $name));
+        }
+
+        return $this->cache->get(
+            sprintf('ux-icon-%s', Icon::nameToId($name)),
+            fn () => $this->inner->get($name),
+            beta: $refresh ? \INF : null,
+        );
     }
 }
