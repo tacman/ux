@@ -70,15 +70,7 @@ final class LocalSvgIconRegistry implements IconRegistryInterface
             throw new \RuntimeException(sprintf('The icon file "%s" contains an empty SVG.', $filename));
         }
 
-        // @todo: save all attributes in the local object ?
-        // allow us to defer the decision of which attributes to keep or not
-
-        $allAttributes = array_map(fn (\DOMAttr $a) => $a->value, [...$svgElement->attributes]);
-        $attributes = [];
-
-        if (isset($allAttributes['viewBox'])) {
-            $attributes['viewBox'] = $allAttributes['viewBox'];
-        }
+        $attributes = array_map(static fn (\DOMAttr $a) => $a->value, [...$svgElement->attributes]);
 
         return new Icon($innerSvg, $attributes);
     }
