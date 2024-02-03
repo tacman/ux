@@ -16,6 +16,7 @@ use Symfony\UX\Icons\IconRenderer;
 use Symfony\UX\Icons\Registry\CacheIconRegistry;
 use Symfony\UX\Icons\Registry\LocalSvgIconRegistry;
 use Symfony\UX\Icons\Twig\UXIconComponent;
+use Symfony\UX\Icons\Twig\UXIconComponentListener;
 use Symfony\UX\Icons\Twig\UXIconExtension;
 
 return static function (ContainerConfigurator $container): void {
@@ -48,6 +49,15 @@ return static function (ContainerConfigurator $container): void {
                 service('.ux_icons.icon_registry'),
             ])
             ->tag('twig.runtime')
+
+        ->set('.ux_icons.twig_component_listener', UXIconComponentListener::class)
+            ->args([
+                service('.ux_icons.icon_renderer'),
+            ])
+            ->tag('kernel.event_listener', [
+                'event' => 'Symfony\UX\TwigComponent\Event\PreCreateForRenderEvent',
+                'method' => 'onPreCreateForRender',
+            ])
 
         ->set('.ux_icons.twig_component.icon', UXIconComponent::class)
     ;

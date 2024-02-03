@@ -71,6 +71,10 @@ final class UXIconsExtension extends ConfigurableExtension implements Configurat
             ->setArgument(1, $mergedConfig['default_icon_attributes'])
         ;
 
+        $container->getDefinition('.ux_icons.twig_component_listener')
+            ->setArgument(1, $mergedConfig['twig_component_name'])
+        ;
+
         $container->getDefinition('.ux_icons.twig_component.icon')
             ->addTag('twig.component', [
                 'key' => $mergedConfig['twig_component_name'],
