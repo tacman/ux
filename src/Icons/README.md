@@ -30,10 +30,6 @@ The name of the file is used as the name of the icon (`name.svg` will be named `
 <twig:UX:Icon name="sub-dir:user-profile" class="w-4 h-4" /> <!-- renders "sub-dir/user-profile.svg" (sub-directory) -->
 ```
 
-> [!TIP]
-> The Twig component _name_ can be [configured](#full-default-configuration). For instance, you can change
-> it to `Icon` to use `<twig:Icon ...>`.
-
 ## Caching
 
 To avoid having to parse icon files on every request, icons are cached.
@@ -50,9 +46,6 @@ During container warmup (`cache:warmup` and `cache:clear`), the icon cache is wa
 ux_icons:
     # The local directory where icons are stored.
     icon_dir: '%kernel.project_dir%/templates/icons'
-
-    # The name of the Twig component to use for rendering icons.
-    twig_component_name: 'UX:Icon'
 
     # Default attributes to add to all icons.
     default_icon_attributes:

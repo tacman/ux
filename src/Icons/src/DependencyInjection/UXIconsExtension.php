@@ -36,10 +36,6 @@ final class UXIconsExtension extends ConfigurableExtension implements Configurat
                     ->info('The local directory where icons are stored.')
                     ->defaultValue('%kernel.project_dir%/templates/icons')
                 ->end()
-                ->scalarNode('twig_component_name')
-                    ->info('The name of the Twig component to use for rendering icons.')
-                    ->defaultValue('UX:Icon')
-                ->end()
                 ->variableNode('default_icon_attributes')
                     ->info('Default attributes to add to all icons.')
                     ->defaultValue(['fill' => 'currentColor'])
@@ -68,16 +64,6 @@ final class UXIconsExtension extends ConfigurableExtension implements Configurat
 
         $container->getDefinition('.ux_icons.icon_renderer')
             ->setArgument(1, $mergedConfig['default_icon_attributes'])
-        ;
-
-        $container->getDefinition('.ux_icons.twig_component_listener')
-            ->setArgument(1, $mergedConfig['twig_component_name'])
-        ;
-
-        $container->getDefinition('.ux_icons.twig_component.icon')
-            ->addTag('twig.component', [
-                'key' => $mergedConfig['twig_component_name'],
-            ])
         ;
     }
 }

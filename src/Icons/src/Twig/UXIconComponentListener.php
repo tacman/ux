@@ -23,13 +23,12 @@ final class UXIconComponentListener
 {
     public function __construct(
         private IconRenderer $iconRenderer,
-        private string $componentName,
     ) {
     }
 
     public function onPreCreateForRender(PreCreateForRenderEvent $event): void
     {
-        if ($this->componentName !== $event->getName()) {
+        if ('UX:Icon' !== $event->getName()) {
             return;
         }
 

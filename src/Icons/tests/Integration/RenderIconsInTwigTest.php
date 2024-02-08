@@ -26,8 +26,8 @@ final class RenderIconsInTwigTest extends KernelTestCase
                 <li id="first">{{ ux_icon('user', {class: 'h-8 w-8'}) }}</li>
                 <li id="second">{{ ux_icon('user') }}</li>
                 <li id="third">{{ ux_icon('sub:check', {'data-action': 'string "with" quotes'}) }}</li>
-                <li id="fifth"><twig:Icon name="user" class="h-8 w-8" /></li>
-                <li id="sixth"><twig:Icon name="sub:check" /></li>
+                <li id="fifth"><twig:UX:Icon name="user" class="h-8 w-8" /></li>
+                <li id="sixth"><twig:UX:Icon name="sub:check" /></li>
             </ul>
             TWIG
         )->render();
