@@ -8,7 +8,7 @@ composer require symfony/ux-icons
 
 ## Add Icons
 
-No icons are provided by this package. Add your svg icons to the `templates/icons/` directory and commit them.
+No icons are provided by this package. Add your svg icons to the `assets/icons/` directory and commit them.
 The name of the file is used as the name of the icon (`name.svg` will be named `name`).
 
 ## Usage
@@ -45,7 +45,7 @@ During container warmup (`cache:warmup` and `cache:clear`), the icon cache is wa
 ```yaml
 ux_icons:
     # The local directory where icons are stored.
-    icon_dir: '%kernel.project_dir%/templates/icons'
+    icon_dir: '%kernel.project_dir%/assets/icons'
 
     # Default attributes to add to all icons.
     default_icon_attributes:

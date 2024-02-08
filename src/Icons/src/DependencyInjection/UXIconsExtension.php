@@ -34,7 +34,7 @@ final class UXIconsExtension extends ConfigurableExtension implements Configurat
             ->children()
                 ->scalarNode('icon_dir')
                     ->info('The local directory where icons are stored.')
-                    ->defaultValue('%kernel.project_dir%/templates/icons')
+                    ->defaultValue('%kernel.project_dir%/assets/icons')
                 ->end()
                 ->variableNode('default_icon_attributes')
                     ->info('Default attributes to add to all icons.')
