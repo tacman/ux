@@ -85,6 +85,10 @@ final class LocalSvgIconRegistry implements IconRegistryInterface
 
     public function getIterator(): \Traversable
     {
+        if (!is_dir($this->iconDir)) {
+            return new \EmptyIterator();
+        }
+
         foreach ($this->finder()->sortByName() as $file) {
             yield str_replace(['.svg', '/'], ['', ':'], $file->getRelativePathname());
         }
