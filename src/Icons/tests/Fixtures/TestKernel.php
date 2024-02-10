@@ -36,6 +36,7 @@ final class TestKernel extends Kernel
             'http_method_override' => false,
             'php_errors' => ['log' => true],
             'property_access' => true,
+            'http_client' => true,
         ]);
 
         $c->extension('twig_component', [

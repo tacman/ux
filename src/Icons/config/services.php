@@ -11,6 +11,8 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Symfony\UX\Icons\Command\ImportIconCommand;
+use Symfony\UX\Icons\Iconify;
 use Symfony\UX\Icons\IconRenderer;
 use Symfony\UX\Icons\Registry\CacheIconRegistry;
 use Symfony\UX\Icons\Registry\LocalSvgIconRegistry;
@@ -54,5 +56,17 @@ return static function (ContainerConfigurator $container): void {
 
         ->set('.ux_icons.twig_component.icon', UXIconComponent::class)
             ->tag('twig.component', ['key' => 'UX:Icon'])
+
+        ->set('.ux_icons.iconify', Iconify::class)
+            ->args([
+                service('http_client')->nullOnInvalid(),
+            ])
+
+        ->set('.ux_icons.command.import', ImportIconCommand::class)
+            ->args([
+                service('.ux_icons.iconify'),
+                service('.ux_icons.local_svg_icon_registry'),
+            ])
+            ->tag('console.command')
     ;
 };

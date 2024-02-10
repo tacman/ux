@@ -11,6 +11,7 @@
 
 namespace Symfony\UX\Icons\Registry;
 
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\UX\Icons\Exception\IconNotFoundException;
 use Symfony\UX\Icons\IconRegistryInterface;
@@ -73,6 +74,13 @@ final class LocalSvgIconRegistry implements IconRegistryInterface
         $attributes = array_map(static fn (\DOMAttr $a) => $a->value, [...$svgElement->attributes]);
 
         return new Icon($innerSvg, $attributes);
+    }
+
+    public function add(string $name, string $svg): void
+    {
+        $filename = sprintf('%s/%s.svg', $this->iconDir, $name);
+
+        (new Filesystem())->dumpFile($filename, $svg);
     }
 
     public function getIterator(): \Traversable

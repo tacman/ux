@@ -65,5 +65,9 @@ final class UXIconsExtension extends ConfigurableExtension implements Configurat
         $container->getDefinition('.ux_icons.icon_renderer')
             ->setArgument(1, $mergedConfig['default_icon_attributes'])
         ;
+
+        if (!$container->getParameter('kernel.debug')) {
+            $container->removeDefinition('.ux_icons.command.import');
+        }
     }
 }

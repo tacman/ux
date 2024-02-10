@@ -11,6 +11,29 @@ composer require symfony/ux-icons
 No icons are provided by this package. Add your svg icons to the `assets/icons/` directory and commit them.
 The name of the file is used as the name of the icon (`name.svg` will be named `name`).
 
+### Import Command
+
+The [Iconify Design](https://iconify.design/) has a huge searchable repository of icons from
+many different icon sets. This package provides a command to locally install icons from this
+site.
+
+1. Visit [Iconify Design](https://icon-sets.iconify.design/) and search for an icon
+   you'd like to use. Once you find one you like, visit the icon's profile page and use the widget
+   to copy its name. For instance, https://icon-sets.iconify.design/flowbite/user-solid/ has the name
+   `flowbite:user-solid`.
+2. Run the following command, replacing `flowbite:user-solid` with the name of the icon you'd like
+   to install:
+
+    ```bash
+    bin/console ux:icons:import flowbite:user-solid # saved as `user-solid.svg` and name is `user-solid`
+
+    # adjust the local name
+    bin/console ux:icons:import flowbite:user-solid@user # saved as `user.svg` and name is `user`
+   
+    # import several at a time
+    bin/console ux:icons:import flowbite:user-solid flowbite:home-solid
+    ```
+
 ## Usage
 
 ```twig
