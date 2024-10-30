@@ -15,6 +15,27 @@
     opacity: 1;
   }
 
+  &.DocsLink-sm {
+    border-radius: var(--border-radius-sm, .5rem);
+    height: 52px;
+    opacity: 1;
+    padding: var(--space-small, .25rem) var(--space-large, 1rem);
+    transform: translateY(50%);
+
+    p {
+      margin-bottom: 0;
+    }
+
+    svg {
+      fill: none;
+      position: relative;
+      bottom: 2px;
+    }
+
+    &:hover {
+      transform: translateY(50%);
+    }
+  }
 }
 .DocsLink_content {
   display: flex;

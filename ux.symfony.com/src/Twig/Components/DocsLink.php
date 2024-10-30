@@ -17,9 +17,10 @@ use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 #[AsTwigComponent]
 class DocsLink
 {
+    public string $size = 'md';
     public string $url;
     public string $title;
-    public string $text;
+    public ?string $text = null;
 
     public ?string $icon = null;
 
@@ -27,5 +28,11 @@ class DocsLink
     public function isExternal(): bool
     {
         return !str_starts_with($this->url, 'https://symfony.com');
+    }
+
+    #[ExposeInTemplate]
+    public function isSmall(): bool
+    {
+        return 'sm' === $this->size;
     }
 }
