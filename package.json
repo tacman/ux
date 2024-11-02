@@ -6,12 +6,12 @@
         "src/*/src/Bridge/*/assets"
     ],
     "scripts": {
-        "build": "node bin/build_javascript.js && node bin/build_styles.js",
+        "build": "yarn workspaces foreach -Apt run build",
         "test": "bin/run-vitest-all.sh",
-        "lint": "yarn workspaces foreach --all -pt run lint",
-        "format": "yarn workspaces foreach --all -pt run format",
-        "check-lint": "yarn workspaces foreach --all -pt run check-lint",
-        "check-format": "yarn workspaces foreach --all -pt run check-format"
+        "lint": "yarn workspaces foreach -Apt run lint",
+        "format": "yarn workspaces foreach -Apt run format",
+        "check-lint": "yarn workspaces foreach -Apt run check-lint",
+        "check-format": "yarn workspaces foreach -Apt run check-format"
     },
     "devDependencies": {
         "@babel/core": "^7.25.2",
@@ -24,7 +24,7 @@
         "@rollup/plugin-typescript": "^11.1.6",
         "@symfony/stimulus-testing": "^2.0.1",
         "@vitest/browser": "^2.1.1",
-        "clean-css-cli": "^5.6.2",
+        "clean-css": "^5.3.3",
         "playwright": "^1.47.0",
         "rollup": "^4.22.5",
         "tslib": "^2.6.3",
