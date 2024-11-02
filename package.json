@@ -8,10 +8,10 @@
     "scripts": {
         "build": "yarn workspaces foreach -Apt run build",
         "test": "bin/run-vitest-all.sh",
-        "lint": "yarn workspaces foreach -Apt run lint",
-        "format": "yarn workspaces foreach -Apt run format",
-        "check-lint": "yarn workspaces foreach -Apt run check-lint",
-        "check-format": "yarn workspaces foreach -Apt run check-format"
+        "lint": "biome lint --write",
+        "format": "biome format --write",
+        "check-lint": "biome lint",
+        "check-format": "biome format"
     },
     "devDependencies": {
         "@babel/core": "^7.25.2",

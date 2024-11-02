@@ -4,6 +4,8 @@
         "include": [
             "*.json",
             "*.md",
+            "bin/*.js",
+            "test/*.js",
             "src/*/*.json",
             "src/*/*/md",
             "src/*/assets/src/**",
