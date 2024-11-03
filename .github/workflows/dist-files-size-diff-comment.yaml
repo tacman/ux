@@ -10,17 +10,12 @@ jobs:
     dist-files-size-diff:
         runs-on: ubuntu-latest
         steps:
-          - name: Download dist-size-diff artifact
+          - name: Download artifacts
             uses: actions/download-artifact@v4
             with:
               name: dist-size-diff
               run-id: ${{ github.event.workflow_run.id }}
-              
-          - name: Download pr-number artifact
-            uses: actions/download-artifact@v4
-            with:
-              name: pr-number
-              run-id: ${{ github.event.workflow_run.id }}
+              github-token: ${{ secrets.GITHUB_TOKEN }}
               
           - name: Read pr-number artifact to env var
             id: read-pr-number
@@ -31,4 +26,4 @@ jobs:
             uses: marocchino/sticky-pull-request-comment@v2
             with:
               number: ${{ steps.read-pr-number.outputs.pr-number }}
-              path: ./dist-size-diff.md
+              path: ./diff.md
