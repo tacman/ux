@@ -6,6 +6,15 @@
     "version": "0.1.0",
     "main": "dist/turbo_controller.js",
     "types": "dist/turbo_controller.d.ts",
+    "scripts": {
+        "build": "node ../../../bin/build_package.js .",
+        "watch": "node ../../../bin/build_package.js . --watch",
+        "test": "../../../bin/test_package.sh .",
+        "lint": "biome lint --write",
+        "format": "biome format --write",
+        "check-lint": "biome lint",
+        "check-format": "biome format"
+    },
     "symfony": {
         "controllers": {
             "turbo-core": {

@@ -4,6 +4,8 @@
         "include": [
             "*.json",
             "*.md",
+            "bin/*.js",
+            "test/*.js",
             "src/*/*.json",
             "src/*/*/md",
             "src/*/assets/src/**",
@@ -13,7 +15,7 @@
             "src/*/src/Bridge/*/assets/src/**",
             "src/*/src/Bridge/*/assets/test/**"
         ],
-        "ignore": ["**/composer.json", "**/vendor", "**/package.json", "**/node_modules"]
+        "ignore": ["**/composer.json", "**/vendor", "**/package.json", "**/node_modules", "**/var"]
     },
     "linter": {
         "rules": {
