@@ -59,7 +59,7 @@ jobs:
                 const diff = await main()
                 console.log(diff);
                 
-                fs.writeFileSync(process.env.GITHUB_WORKSPACE + '/dist-size-diff.md', diff)
+                fs.writeFileSync(process.env.GITHUB_WORKSPACE + '/diff.md', diff)
 
           - name: Save PR number
             run: |
