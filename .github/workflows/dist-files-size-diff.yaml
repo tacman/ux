@@ -1,0 +1,68 @@
+name: Dist Files Size Diff
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - 'src/*/assets/dist/**'
+      - 'src/*/src/Bridge/*/assets/dist/**'
+
+jobs:
+    dist-files-size-diff:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Configure git
+            run: |
+              git config --global user.email ""
+              git config --global user.name "github-action[bot]"
+              
+          - uses: actions/checkout@v4
+            with:
+              ref: ${{ github.base_ref }}
+
+          - name: Get dist files size (from base branch)
+            id: base-dist-files
+            run: |
+              set -e
+              
+              FILES=$(find src -mindepth 2 -path '*/assets/dist/*' \( -name "*.js" -o -name "*.css" \) -not \( -path '*/tests/*' -o -path '*/public/*' -o -path '*/vendor/*' \) | sort | while read -r file; do
+                  echo "{\"$file\": {\"size\": $(wc -c < "$file"), \"size_gz\": $(gzip -c "$file" | wc -c)}}"
+              done | jq -s 'add' -c)
+              
+              echo "files=$FILES" >> $GITHUB_OUTPUT
+
+          - uses: actions/checkout@v4
+              
+          - name: Get dist files size (from pull request)
+            id: pr-dist-files
+            run: |
+              set -e
+              
+              FILES=$(find src -mindepth 2 -path '*/assets/dist/*' \( -name "*.js" -o -name "*.css" \) -not \( -path '*/tests/*' -o -path '*/public/*' -o -path '*/vendor/*' \) | sort | while read -r file; do
+                  echo "{\"$file\": {\"size\": $(wc -c < "$file"), \"size_gz\": $(gzip -c "$file" | wc -c)}}"
+              done | jq -s 'add' -c)
+              
+              echo "files=$FILES" >> $GITHUB_OUTPUT
+
+          - name: Generate the diff
+            id: diff
+            uses: actions/github-script@v7
+            env:
+                BASE_DIST_FILES: ${{ steps.base-dist-files.outputs.files }}
+                PR_DIST_FILES: ${{ steps.pr-dist-files.outputs.files }}
+            with:
+              result-encoding: string
+              script: |
+                const fs = require('fs')
+                const { main } = await import('${{ github.workspace }}/.github/generate-dist-files-size-diff.mjs')
+                
+                const diff = await main()
+                console.log(diff);
+                
+                fs.writeFileSync(process.env.GITHUB_WORKSPACE + '/dist-size.md', diff)
+                
+          - name: Upload the diff
+            uses: actions/upload-artifact@v4
+            with:
+              name: dist-size-${{ github.event.number }}
+              path: ./dist-size.md

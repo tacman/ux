@@ -1,0 +1,22 @@
+name: Dist Files Size Diff (Comment)
+
+on:
+  workflow_run:
+    workflows: ["Dist Files Size Diff"]
+    types:
+      - completed
+
+jobs:
+    dist-files-size-diff:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Download artifact
+            uses: actions/download-artifact@v4
+            with:
+              name: dist-size-${{ github.event.number }}
+              
+          - name: Comment on the pull request (if success)
+            if: ${{ always() && steps.diff.conclusion == 'success' }}
+            uses: marocchino/sticky-pull-request-comment@v2
+            with:
+              path: ./dist-size.md
