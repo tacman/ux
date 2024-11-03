@@ -72,7 +72,7 @@ export function main() {
     const base = JSON.parse(process.env.BASE_DIST_FILES);
     /** @type {Record<string, {size: number, size_gz: number}>} */
     const pr = JSON.parse(process.env.PR_DIST_FILES);
-    let output = '<h1>📊 Dist packagesFiles size difference</h1>\n\n';
+    let output = '<h1>📊 Packages dist files size difference</h1>\n\n';
 
     /**
      * @type {Map<string, {
@@ -139,7 +139,7 @@ export function main() {
         return output;
     }
 
-    output += 'Thanks for the PR! Here is the difference in size of the dist packagesFiles between the base and the PR.\n';
+    output += 'Thanks for the PR! Here is the difference in size of the packages dist files between the base branch and the PR.\n';
     output += 'Please review the changes and make sure they are expected.\n\n';
     output += `<table>
     <thead><tr><th>File</th><th>Before (Size / Gzip)</th><th>After (Size / Gzip)</th></tr></thead>
