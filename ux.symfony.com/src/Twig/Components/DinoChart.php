@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Twig;
+namespace App\Twig\Components;
 
 use App\Service\DinoStatsService;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;

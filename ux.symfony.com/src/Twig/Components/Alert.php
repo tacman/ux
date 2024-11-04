@@ -9,23 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Twig;
+namespace App\Twig\Components;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
-use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
 #[AsTwigComponent]
-class DocsLink
+class Alert
 {
-    public string $url;
-    public string $title;
-    public string $text;
+    public string $type = 'success';
+    public string $message;
 
-    public ?string $icon = null;
-
-    #[ExposeInTemplate]
-    public function isExternal(): bool
+    public function getIcon(): string
     {
-        return !str_starts_with($this->url, 'https://symfony.com');
+        return match ($this->type) {
+            'success' => 'bi:check-circle',
+            'danger' => 'bi:exclamation-circle',
+        };
     }
 }
