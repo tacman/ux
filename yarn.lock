@@ -2856,7 +2856,7 @@ __metadata:
     vitest-canvas-mock: "npm:^0.3.3"
   peerDependencies:
     "@hotwired/stimulus": ^3.0.0
-    chart.js: ^4.0
+    chart.js: ^3.4.1 || ^4.0
   languageName: unknown
   linkType: soft
 
@@ -2987,7 +2987,7 @@ __metadata:
     svelte: "npm:^3.0 || ^4.0"
   peerDependencies:
     "@hotwired/stimulus": ^3.0.0
-    svelte: ^4.0
+    svelte: ^3.0 || ^4.0
   languageName: unknown
   linkType: soft
 
@@ -3042,7 +3042,7 @@ __metadata:
     "@hotwired/turbo": "npm:^7.1.0 || ^8.0"
   peerDependencies:
     "@hotwired/stimulus": ^3.0.0
-    "@hotwired/turbo": ^8.0
+    "@hotwired/turbo": ^7.1.1 || ^8.0
   languageName: unknown
   linkType: soft
 
