@@ -47,6 +47,19 @@ processWorkspace() {
     fi
     
     echo -e "Processing workspace $workspace at location $location...\n"
+    
+    echo "Checking '$package_json_path' for peerDependencies and importmap dependencies to have the same version"
+    deps=$(jq -r '.peerDependencies | keys[]' "$package_json_path")
+    for library in $deps; do
+        version=$(jq -r ".peerDependencies.\"$library\"" "$package_json_path")
+        importmap_version=$(jq -r ".symfony.importmap.\"$library\"" "$package_json_path")
+
+        if [ "$version" != "$importmap_version" ]; then
+            echo " -> Version mismatch for $library: $version (peerDependencies) vs $importmap_version (importmap)"
+            echo " -> You need to match the version of the \"peerDependency\" with the version in the \"importmap\""
+            exit
+        fi
+    done
 
     echo "Checking '$package_json_path' for peerDependencies with multiple versions defined"
     deps_with_multiple_versions=$(jq -r '.peerDependencies | to_entries[] | select(.value | contains("||")) | .key' "$package_json_path")
@@ -68,6 +81,9 @@ processWorkspace() {
                     runTestSuite
                 fi
             done
+            
+            echo " -> Reverting version changes for $library"
+            yarn workspace "$workspace" add "$library@$versionValue" --peer
         done
     else
         echo -e " -> No peerDependencies found with multiple versions defined\n"
