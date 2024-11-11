@@ -40,19 +40,15 @@ class LoadDataCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $progressIndicator = new ProgressIndicator($output, finishedIndicatorValue: '✅');
-        try {
-            $progressIndicator->start("Loading data");
-            $this->clearEntity(Chat::class, $io);
-            $this->clearEntity(TodoItem::class, $io);
-            $this->clearEntity(TodoList::class, $io);
-            $this->clearEntity(InvoiceItem::class, $io);
-            $this->clearEntity(Invoice::class, $io);
-            $this->growFood($io);
-            $this->manufactureProducts($io);
-            $progressIndicator->finish('Finished');
-        } catch (\Exception) {
-            $progressIndicator->finish('Failed', '🚨');
-        }
+        $progressIndicator->start("Loading data");
+        $this->clearEntity(Chat::class, $io);
+        $this->clearEntity(TodoItem::class, $io);
+        $this->clearEntity(TodoList::class, $io);
+        $this->clearEntity(InvoiceItem::class, $io);
+        $this->clearEntity(Invoice::class, $io);
+        $this->growFood($io);
+        $this->manufactureProducts($io);
+        $progressIndicator->finish('Finished');
 
         return Command::SUCCESS;
     }
