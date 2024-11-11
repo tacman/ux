@@ -22,6 +22,7 @@ use App\Entity\TodoList;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressIndicator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -38,13 +39,20 @@ class LoadDataCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $this->clearEntity(Chat::class, $io);
-        $this->clearEntity(TodoItem::class, $io);
-        $this->clearEntity(TodoList::class, $io);
-        $this->clearEntity(InvoiceItem::class, $io);
-        $this->clearEntity(Invoice::class, $io);
-        $this->growFood($io);
-        $this->manufactureProducts($io);
+        $progressIndicator = new ProgressIndicator($output, finishedIndicatorValue: '✅');
+        try {
+            $progressIndicator->start("Loading data");
+            $this->clearEntity(Chat::class, $io);
+            $this->clearEntity(TodoItem::class, $io);
+            $this->clearEntity(TodoList::class, $io);
+            $this->clearEntity(InvoiceItem::class, $io);
+            $this->clearEntity(Invoice::class, $io);
+            $this->growFood($io);
+            $this->manufactureProducts($io);
+            $progressIndicator->finish('Finished');
+        } catch (\Exception) {
+            $progressIndicator->finish('Failed', '🚨');
+        }
 
         return Command::SUCCESS;
     }
