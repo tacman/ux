@@ -50,18 +50,7 @@ Help Symfony by [sponsoring][3] its development!
 
 ## Contributing
 
-If you want to test your code in an existing project that uses Symfony UX packages,
-you can use the `link` utility provided in this Git repository (that you have to clone).
-This tool scans the `vendor/` directory of your project, finds Symfony UX packages it uses,
-and replaces them by symbolic links to the ones in the Git repository.
-
-```shell
-# Install required dependencies
-$ composer install
-
-# And link Symfony UX packages to your project
-$ php link /path/to/your/project
-```
+Thank you for considering contributing to Symfony UX! You can find the [contribution guide here](CONTRIBUTING.md).
 
 [1]: https://symfony.com/backers
 [2]: https://mercure.rocks
