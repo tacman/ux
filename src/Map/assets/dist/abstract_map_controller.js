@@ -4,17 +4,21 @@ class default_1 extends Controller {
     constructor() {
         super(...arguments);
         this.markers = new Map();
-        this.infoWindows = [];
         this.polygons = new Map();
         this.polylines = new Map();
+        this.infoWindows = [];
+        this.isConnected = false;
     }
     connect() {
         const options = this.optionsValue;
         this.dispatchEvent('pre-connect', { options });
+        this.createMarker = this.createDrawingFactory('marker', this.markers, this.doCreateMarker.bind(this));
+        this.createPolygon = this.createDrawingFactory('polygon', this.polygons, this.doCreatePolygon.bind(this));
+        this.createPolyline = this.createDrawingFactory('polyline', this.polylines, this.doCreatePolyline.bind(this));
         this.map = this.doCreateMap({ center: this.centerValue, zoom: this.zoomValue, options });
-        this.markersValue.forEach((marker) => this.createMarker(marker));
-        this.polygonsValue.forEach((polygon) => this.createPolygon(polygon));
-        this.polylinesValue.forEach((polyline) => this.createPolyline(polyline));
+        this.markersValue.forEach((definition) => this.createMarker({ definition }));
+        this.polygonsValue.forEach((definition) => this.createPolygon({ definition }));
+        this.polylinesValue.forEach((definition) => this.createPolyline({ definition }));
         if (this.fitBoundsToMarkersValue) {
             this.doFitBoundsToMarkers();
         }
@@ -25,30 +29,7 @@ class default_1 extends Controller {
             polylines: [...this.polylines.values()],
             infoWindows: this.infoWindows,
         });
-    }
-    createMarker(definition) {
-        this.dispatchEvent('marker:before-create', { definition });
-        const marker = this.doCreateMarker(definition);
-        this.dispatchEvent('marker:after-create', { marker });
-        marker['@id'] = definition['@id'];
-        this.markers.set(definition['@id'], marker);
-        return marker;
-    }
-    createPolygon(definition) {
-        this.dispatchEvent('polygon:before-create', { definition });
-        const polygon = this.doCreatePolygon(definition);
-        this.dispatchEvent('polygon:after-create', { polygon });
-        polygon['@id'] = definition['@id'];
-        this.polygons.set(definition['@id'], polygon);
-        return polygon;
-    }
-    createPolyline(definition) {
-        this.dispatchEvent('polyline:before-create', { definition });
-        const polyline = this.doCreatePolyline(definition);
-        this.dispatchEvent('polyline:after-create', { polyline });
-        polyline['@id'] = definition['@id'];
-        this.polylines.set(definition['@id'], polyline);
-        return polyline;
+        this.isConnected = true;
     }
     createInfoWindow({ definition, element, }) {
         this.dispatchEvent('info-window:before-create', { definition, element });
@@ -58,53 +39,50 @@ class default_1 extends Controller {
         return infoWindow;
     }
     markersValueChanged() {
-        if (!this.map) {
+        if (!this.isConnected) {
             return;
         }
-        this.markers.forEach((marker) => {
-            if (!this.markersValue.find((m) => m['@id'] === marker['@id'])) {
-                this.removeMarker(marker);
-                this.markers.delete(marker['@id']);
-            }
-        });
-        this.markersValue.forEach((marker) => {
-            if (!this.markers.has(marker['@id'])) {
-                this.createMarker(marker);
-            }
-        });
+        this.onDrawChanged(this.markers, this.markersValue, this.createMarker, this.doRemoveMarker);
         if (this.fitBoundsToMarkersValue) {
             this.doFitBoundsToMarkers();
         }
     }
     polygonsValueChanged() {
-        if (!this.map) {
+        if (!this.isConnected) {
             return;
         }
-        this.polygons.forEach((polygon) => {
-            if (!this.polygonsValue.find((p) => p['@id'] === polygon['@id'])) {
-                this.removePolygon(polygon);
-                this.polygons.delete(polygon['@id']);
-            }
-        });
-        this.polygonsValue.forEach((polygon) => {
-            if (!this.polygons.has(polygon['@id'])) {
-                this.createPolygon(polygon);
-            }
-        });
+        this.onDrawChanged(this.polygons, this.polygonsValue, this.createPolygon, this.doRemovePolygon);
     }
     polylinesValueChanged() {
-        if (!this.map) {
+        if (!this.isConnected) {
             return;
         }
-        this.polylines.forEach((polyline) => {
-            if (!this.polylinesValue.find((p) => p['@id'] === polyline['@id'])) {
-                this.removePolyline(polyline);
-                this.polylines.delete(polyline['@id']);
-            }
+        this.onDrawChanged(this.polylines, this.polylinesValue, this.createPolyline, this.doRemovePolyline);
+    }
+    createDrawingFactory(type, draws, factory) {
+        const eventBefore = `${type}:before-create`;
+        const eventAfter = `${type}:after-create`;
+        return ({ definition }) => {
+            this.dispatchEvent(eventBefore, { definition });
+            const drawing = factory({ definition });
+            this.dispatchEvent(eventAfter, { [type]: drawing });
+            draws.set(definition['@id'], drawing);
+            return drawing;
+        };
+    }
+    onDrawChanged(draws, newDrawDefinitions, factory, remover) {
+        const idsToRemove = new Set(draws.keys());
+        newDrawDefinitions.forEach((definition) => {
+            idsToRemove.delete(definition['@id']);
         });
-        this.polylinesValue.forEach((polyline) => {
-            if (!this.polylines.has(polyline['@id'])) {
-                this.createPolyline(polyline);
+        idsToRemove.forEach((id) => {
+            const draw = draws.get(id);
+            remover(draw);
+            draws.delete(id);
+        });
+        newDrawDefinitions.forEach((definition) => {
+            if (!draws.has(definition['@id'])) {
+                factory({ definition });
             }
         });
     }
