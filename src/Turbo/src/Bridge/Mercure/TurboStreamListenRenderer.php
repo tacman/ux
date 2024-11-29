@@ -44,6 +44,28 @@ final class TurboStreamListenRenderer implements TurboStreamListenRendererInterf
 
     public function renderTurboStreamListen(Environment $env, $topic): string
     {
+        $topics = $topic instanceof TopicSet
+            ? array_map($this->resolveTopic(...), $topic->getTopics())
+            : [$this->resolveTopic($topic)];
+
+        $controllerAttributes = ['hub' => $this->hub->getPublicUrl()];
+        if (1 < \count($topics)) {
+            $controllerAttributes['topics'] = $topics;
+        } else {
+            $controllerAttributes['topic'] = current($topics);
+        }
+
+        $stimulusAttributes = $this->stimulusHelper->createStimulusAttributes();
+        $stimulusAttributes->addController(
+            'symfony/ux-turbo/mercure-turbo-stream',
+            $controllerAttributes,
+        );
+
+        return (string) $stimulusAttributes;
+    }
+
+    private function resolveTopic(object|string $topic): string
+    {
         if (\is_object($topic)) {
             $class = $topic::class;
 
@@ -51,18 +73,14 @@ final class TurboStreamListenRenderer implements TurboStreamListenRendererInterf
                 throw new \LogicException(\sprintf('Cannot listen to entity of class "%s" as the PropertyAccess component is not installed. Try running "composer require symfony/property-access".', $class));
             }
 
-            $topic = \sprintf(Broadcaster::TOPIC_PATTERN, rawurlencode($class), rawurlencode(implode('-', $id)));
-        } elseif (!preg_match('/[^a-zA-Z0-9_\x7f-\xff\\\\]/', $topic) && class_exists($topic)) {
-            // Generate a URI template to subscribe to updates for all objects of this class
-            $topic = \sprintf(Broadcaster::TOPIC_PATTERN, rawurlencode($topic), '{id}');
+            return \sprintf(Broadcaster::TOPIC_PATTERN, rawurlencode($class), rawurlencode(implode('-', $id)));
         }
 
-        $stimulusAttributes = $this->stimulusHelper->createStimulusAttributes();
-        $stimulusAttributes->addController(
-            'symfony/ux-turbo/mercure-turbo-stream',
-            ['topic' => $topic, 'hub' => $this->hub->getPublicUrl()]
-        );
+        if (!preg_match('/[^a-zA-Z0-9_\x7f-\xff\\\\]/', $topic) && class_exists($topic)) {
+            // Generate a URI template to subscribe to updates for all objects of this class
+            return \sprintf(Broadcaster::TOPIC_PATTERN, rawurlencode($topic), '{id}');
+        }
 
-        return (string) $stimulusAttributes;
+        return $topic;
     }
 }
