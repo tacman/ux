@@ -8,10 +8,8 @@
     "scripts": {
         "build": "yarn workspaces foreach -Apt run build",
         "test": "yarn workspaces foreach -Apt run test",
-        "lint": "biome lint --write",
-        "format": "biome format --write",
-        "check-lint": "biome lint",
-        "check-format": "biome format"
+        "check": "biome check",
+        "ci": "biome ci"
     },
     "devDependencies": {
         "@babel/core": "^7.25.2",
