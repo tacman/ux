@@ -81,14 +81,14 @@ To help you with assets, you can run the following commands in a specific packag
   - `yarn run build`: build (compile) assets from the package,
   - `yarn run watch`: watch for modifications and rebuild assets from the package,
   - `yarn run test`: run the tests from the package,
-  - `yarn run lint`: lint assets from the package,
-  - `yarn run format`: format assets from the package.
+  - `yarn run check`: run the formatter, linter, and sort imports, and fails if any modifications 
+  - `yarn run check --write`: run the formatter, linter, imports sorting, and write modifications 
 
 Thanks to [Yarn Workspaces](https://yarnpkg.com/features/workspaces), you can also run these commands from the root directory of the project:
   - `yarn run build`: build (compile) assets from **all** packages,
   - `yarn run test`: run the tests from **all** packages,
-  - `yarn run lint`: lint assets from **all** packages,
-  - `yarn run format`: format assets from **all** packages,
+  - `yarn run check`: run the formatter, linter, and sort imports for **all** packages, and fails if any modifications
+  - `yarn run check --write`: run the formatter, linter, imports sorting for **all** packages, and write modifications
 
 ## Useful Git commands
 
