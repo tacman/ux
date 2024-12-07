@@ -1,17 +1,18 @@
-<div {{ attributes.defaults({class: 'DocsLink DocsLink-' ~ size }) }}>
+<div {{ attributes.defaults({class: 'DocsLink DocsLink-' ~ size}) }}>
     <div class="DocsLink_content">
         {% if isSmall %}
             <p class="d-flex align-items-center">
-                <twig:ux:icon name="fluent-emoji-flat:open-book" class="Icon me-2" font-size="32"/>
+                <twig:ux:icon name="mdi:book-open-variant-outline" class="Icon me-2" />
+
                 <a href="{{ url }}" class="DocsLink_link"
                    rel="{{ isExternal ? 'external noopened noreferrer' }}"
                 >{{ title }}</a>
             </p>
         {% else %}
             <p class="DocsLink_title ubuntu-header">
-                <a href="{{ url }}" class="DocsLink_link"
-                   rel="{{ isExternal ? 'external noopened noreferrer' }}"
-                >{{ title }}</a>
+                <a href="{{ url }}" class="DocsLink_link" rel="{{ isExternal ? 'external noopened noreferrer' }}">
+                    {{ title }}
+                </a>
                 {% if icon|default %}
                     <twig:ux:icon name="{{ icon }}" class="Icon DocsLink_arrow"/>
                 {% elseif isExternal %}
