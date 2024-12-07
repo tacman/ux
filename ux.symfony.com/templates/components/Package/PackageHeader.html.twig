@@ -12,15 +12,21 @@
             </p>
         </div>
 
-        {% if command is not defined or command %}
-            <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center">
+            {% if command is not defined or command %}
                 <twig:TerminalCommand
                     aria-label="Composer command to install {{ package.humanName }}"
                     command="{{ package.composerRequireCommand }}"
                     style="--color-accent: {{ package.color }}; transform: translateY(50%);"
                 />
-            </div>
-        {% endif %}
+            {% endif %}
 
+            <twig:DocsLink
+                class="ms-3"
+                size="sm"
+                title="Read the docs"
+                url="{{ package.officialDocsUrl }}"
+            />
+        </div>
     </div>
 </div>
