@@ -7,7 +7,7 @@ const path = require('node:path');
 const fs = require('node:fs');
 const glob = require('glob');
 const rollup = require('rollup');
-const CleanCSS = require('clean-css');
+const LightningCSS = require('lightningcss');
 const { getRollupConfiguration } = require('./rollup');
 
 const args = parseArgs({
@@ -70,7 +70,12 @@ async function main() {
 
         console.log('Minifying CSS...');
         const css = await fs.promises.readFile(inputStyleFile, 'utf-8');
-        const minified = new CleanCSS().minify(css).styles;
+        const { code: minified } = LightningCSS.transform({
+            filename: path.basename(inputStyleFile, '.css'),
+            code: Buffer.from(css),
+            minify: true,
+            sourceMap: false, // TODO: Maybe we can add source maps later? :)
+        });
         await fs.promises.writeFile(inputStyleFileDist, minified);
     };
 
