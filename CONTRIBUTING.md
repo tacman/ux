@@ -90,6 +90,21 @@ Thanks to [Yarn Workspaces](https://yarnpkg.com/features/workspaces), you can al
   - `yarn run check`: run the formatter, linter, and sort imports for **all** packages, and fails if any modifications
   - `yarn run check --write`: run the formatter, linter, imports sorting for **all** packages, and write modifications
 
+### Working on documentation
+
+Symfony UX documentation is written in ReStructuredText (`.rst`) and is located in the `docs/` directory
+of each package.
+
+When contributing to the documentation, please make sure to follow the Symfony
+[documentation guidelines](https://symfony.com/doc/current/contributing/documentation/index.html).
+
+To verify your changes locally, you can use the `oskarstark/doctor-rst` Docker image. Run the following
+command from the root directory of the projet:
+
+```shell
+docker run --rm -it -e DOCS_DIR='/docs' -v ${PWD}:/docs  oskarstark/doctor-rst -vvv
+```
+
 ## Useful Git commands
 
 1. To keep your fork up-to-date with the upstream repository and `2.x` branch, you can run the following commands:
